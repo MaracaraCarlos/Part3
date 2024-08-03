@@ -23,37 +23,10 @@ app.use(
   )
 )
 
-/* let persons = [
-  { 
-    "id": 1,
-    "name": "Arto Hellas", 
-    "number": "040-123456"
-  },
-  { 
-    "id": 2,
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
-  },
-  { 
-    "id": 3,
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
-  },
-  { 
-    "id": 4,
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
-  }
-] */
-
-/* Front page */
-// app.get('/', (request, response) => {
-//   response.send('<h1>Hello World!</h1>')
-// })
 /* Info page */
 app.get('/info', (request, response) => {
   const qtyPersons = Person.length
-  
+
   const today = new Date
   response.send(
     `
@@ -83,25 +56,21 @@ app.post('/api/persons', (request, response, next) => {
 
   person.save()
     .then(savedPerson => {
-    response.json(savedPerson)
-  })
-  .catch(error => next(error))
+      response.json(savedPerson)
+    })
+    .catch(error => next(error))
 })
-
-// const generateId = (min, max) => {
-//   return Math.floor(Math.random() * (max - min) + min)
-// }
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
-  .then(person => {
-    if (person) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
-  })
-  .catch(error => next(error))
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
@@ -109,7 +78,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
   Person.findByIdAndUpdate(
     request.params.id,
-    {name, number},
+    { name, number },
     { new: true, runValidators: true, context: 'query' }
   )
     .then(updatePerson => {
@@ -117,38 +86,6 @@ app.put('/api/persons/:id', (request, response, next) => {
     })
     .catch(error => next(error))
 })
-
-// app.post('/api/persons', (request, response) => {
-//   const body = request.body
-
-//   if (!body.name) {
-//     return response.status(400).json({ 
-//       error: 'name missing' 
-//     })
-//   }
-
-//   if (!body.number) {
-//     return response.status(400).json({
-//       error: 'number missing'
-//     })
-//   }
-
-//   if (persons.map(person =>person.name).includes(body.name)) {
-//     return response.status(400).json({
-//       error: 'name must be unique'
-//     })
-//   }
-
-//   const person = {
-//     name: body.name,
-//     number: body.number,
-//     id: generateId(0, 10000),
-//   }
-
-//   persons = persons.concat(person)
-
-//   response.json(person)
-// })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
@@ -169,7 +106,6 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-// este debe ser el último middleware cargado, ¡también todas las rutas deben ser registrada antes que esto!
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001

@@ -26,7 +26,7 @@ if (process.argv.length<3) {
   console.log('give password as argument')
   process.exit(1)
 
-} else if (process.argv.length==3) {
+} else if (process.argv.length === 3) {
   Person.find({}).then(result => {
     console.log('phonebook:')
     result.forEach(person => {
